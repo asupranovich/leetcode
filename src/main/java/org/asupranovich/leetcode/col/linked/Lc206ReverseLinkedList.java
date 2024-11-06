@@ -21,4 +21,18 @@ public class Lc206ReverseLinkedList {
         reversedNode.next = new ListNode(node.val);
         return reversedNode.next;
     }
+
+    public ListNode reverseList2(ListNode node) {
+        ListNode first = null;
+        ListNode second = node;
+
+        while (second != null) {
+            ListNode third = second.next;
+            second.next = first;
+            first = second;
+            second = third;
+        }
+
+        return first;
+    }
 }
