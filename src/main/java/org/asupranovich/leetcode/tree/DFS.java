@@ -1,8 +1,12 @@
 package org.asupranovich.leetcode.tree;
 
+import com.sun.source.tree.Tree;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 public class DFS {
@@ -34,6 +38,27 @@ public class DFS {
         return values;
     }
 
+    public List<Integer> inOrderTraversalStack(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+
+        while (cur != null || !stack.empty()) {
+            while (cur != null) {
+                stack.add(cur);
+                cur = cur.left;
+            }
+            cur = stack.pop();
+            result.add(cur.val);
+            cur = cur.right;
+        }
+
+        return result;
+    }
+
     public List<Integer> preOrderTraversal(TreeNode node) {
         if (node == null) {
             return Collections.emptyList();
@@ -43,6 +68,27 @@ public class DFS {
         values.addAll(preOrderTraversal(node.left));
         values.addAll(preOrderTraversal(node.right));
         return values;
+    }
+
+    public List<Integer> preOrderTraversalStack(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        while (!stack.empty()) {
+            var node = stack.pop();
+            result.add(node.val);
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+            }
+        }
+
+        return result;
     }
 
     public List<Integer> postOrderTraversal(TreeNode node) {
@@ -61,13 +107,13 @@ public class DFS {
             return Collections.emptyList();
         }
 
-        List<Integer> values = new ArrayList<>();
+        LinkedList<Integer> values = new LinkedList<>();
         Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
 
         while (!stack.isEmpty()) {
             TreeNode node = stack.pop();
-            values.add(node.val);
+            values.addFirst(node.val);
             if (node.left != null) {
                 stack.push(node.left);
             }
@@ -75,7 +121,7 @@ public class DFS {
                 stack.push(node.right);
             }
         }
-        Collections.reverse(values);
+
         return values;
     }
 }
